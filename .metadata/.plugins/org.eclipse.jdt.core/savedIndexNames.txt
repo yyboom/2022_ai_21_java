@@ -1,6 +1,5 @@
 INDEX VERSION 1.131+C:\Users\Á¶À±¿µ\OneDrive\¹®¼­\ai_21_java\workspace\.metadata\.plugins\org.eclipse.jdt.core
 3343542767.index
-55267835.index
 2155133277.index
 1879846185.index
 118169023.index

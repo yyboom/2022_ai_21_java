@@ -1,0 +1,227 @@
+/////////////////////////////////////////DAY12///////////////////////////////////////////////
+▣  날짜/시간/표시형식
+1. Date 클래스
+	- 대부분의 메서드는 현재 deprecated 중
+	- 주로 하위 버전 호환성이나 간단한 날짜 정보를 원할 때만  사용
+2. Calendar 클래스
+	- 달력 정보를 제공하는 클래스
+	- 지역이나 문화에 따라 달력을 표시하는 방식이 다르기 때문에 추상 클래스로 되어 있음
+	 현재 시각
+		Calendar  now = Calendar.getInstance();
+
+// Date와 Calendar 클래스를 사용해 현재 날짜와 시각을 출력
+
+
+3. SimpleDateFormat 클래스
+	- SimpleDateFormat()
+	- SimpleDateFormat(String pattern) 
+	- SimpleDateFormat(String pattern, Locale locale) 
+
+		SimpleDateFormat sdf01 = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println(sdf01.format(now));
+		System.out.println();
+
+		Date now = new Date();
+		System.out.println(now);
+		System.out.println();
+		SimpleDateFormat sdf01 = new SimpleDateFormat("yyyy-MM-dd");
+		// yyyy - 4자리 연도,  M - 한자리 월(1,2,...), MM - 두자리 월(01,02,...), d-한자리 일(1,2,...), dd-두자리 일(01, 02,..)
+		System.out.println(sdf01.format(now));
+		System.out.println();
+	
+		SimpleDateFormat sdf02 = new SimpleDateFormat("yy년 MM월 dd일 H시 mm분 ss초");
+		// y-연도, H-24시간표현, h-12시간 형식, m-분, s-초)
+		System.out.println(sdf02.format(now));
+//		System.out.println(sdf02.format(new Date()));
+		System.out.println();
+		
+		Calendar calDate = Calendar.getInstance();
+		//추상클래스와 인터페이스는 객체를 생성할 수 없다.
+		// Calendar.getInstance();를 이용해서 현재 시각을 가져오기
+		System.out.println(calDate);
+		System.out.println();
+		SimpleDateFormat sdf03 = new SimpleDateFormat("yy년 MM월 dd일 H시 mm분 ss초");
+		System.out.println(sdf03.format(calDate.getTime()));
+	
+		System.out.println(calDate.get(Calendar.YEAR) + "년도");
+		System.out.println(calDate.get(Calendar.MONTH) + 1 + "월"); //월 - 0부터 시작이므로
+		System.out.println(calDate.get(Calendar.DAY_OF_MONTH) + "일"); 		
+		System.out.println(calDate.get(Calendar.HOUR) + "시"); 		
+		System.out.println(calDate.get(Calendar.HOUR_OF_DAY) + "시"); 		
+	}
+
+
+
+
+4. DecimalFormat  참조변수1 = new DecimalFormat("패턴")  // 0, #, %,...
+    String 참조변수2 = 참조변수1.format(처리할 숫자); 
+
+			DecimalFormat df01 = new DecimalFormat("#,###");// 천단위 구분기호
+			System.out.println(df01.format(1234567)); //1,234,567
+			System.out.println(df01.format(123)); //123
+			
+			DecimalFormat df02 = new DecimalFormat("#,###.00");// 천단위 구분기호에 소수이하 둘째자리까지 표현
+			System.out.println(df02.format(12346));//12,346.00
+			System.out.println(df02.format(4567.4173));//4,567.42, 반올림
+			
+			DecimalFormat df03 = new DecimalFormat("#,###원");
+			System.out.println(df03.format(1234567));
+
+
+
+
+
+
+===============================================================================
+=============================================================================
+▣ 제네릭 (Generic)  => 제네릭은 클래스 내에서 사용되는 타입을 클래스가 정의할 때가 아닌 객체를 생성할 때 정의하겠다는 의미
+	- 하나의 코드를 다양한 타입의 객체에 재사용하는 객체 지향 기법
+	- 클래스, 인터페이스, 메서드를 정의할 때 타입을 변수로 사용
+	- 장점 
+		. 컴파일할 때 타입을 점검하기 때문에 실행 도중 발생할 오류를 미리 방지할 수 있음
+		. 불필요한 타입 변환이 없어 프로그램 성능이 향상된다.
+
+1. 제네릭 클래스와 인터페이스
+	- 타입을 변수로 사용하는 클래스와 인터페이스
+	- <>(다이아몬드연산자) 내부에 타입 매개변수를 표시
+	- 타입매개변수는 객체를 생성할 때 구체적인 타입으로 대체함
+	- 제네릭 클래스의 타입 매개변수는 필드나 메서드의 타입
+
+	- 타입매개변수 : 영문대문자면 어떤 것이 사용 가능
+		. 일반 타입	T  	type
+		. 원소(요소) 	E	element
+		. 키		K	key
+		. 숫자		N	number
+		. 값		V 	value 
+
+	- 제네릭 클래스의 생성자
+		제네릭클래스<적용할타입> 변수 = new 제네릭클래스<적용할타입>( );
+		제네릭클래스<적용할타입> 변수 = new 제네릭클래스<>( );
+	- 기본타입(int, long, byte, boolean,...)은 사용할 수 없고, 참조 타입만 사용 가능
+
+2. 제네릭 상속 및 타입 한정
+	- 자식 객체를 부모 타입 변수에 대입
+	- 타입 매개변수의 범위를 특정 타입으로 제한
+		. < T extends 특정 클래스> 반환타입 메서드명(..){  }
+		. < T extends 인터페이스> 반환타입 메서드명(..){  }
+
+3. 제네릭 메서드
+	- 제네릭 메서드는 제네릭 클래스뿐만 아니라 일반 클래스의 멤버도 될 수 있다.
+ 	- 일반 클래스에서 제네릭 메서드를 정의할 때는 타입 매개변수를 반환 타입 앞에 둠
+		<타입매개변수> 반환타입 메서드명(..) {  }
+
+	- 제네릭 메서드의 타입 매개변수는 메서드의 반환 타입이나 매개변수의 타입으로 사용할 수 있음
+	- 제네릭 메서드를 호출할 때는 컴파일러가 매개변수 값의 타입을 보고 구체적인 타입을 추정할 수 있어 생략 가능
+
+
+=======================
+▣  compareTo(Object obl)
+   	- 값을 비교
+	- 비교할 값이 매개값으로 받은 값보다 크면 : 1 을 반환
+	  비교할 값이 매개값으로 받은 값보다 작으면 : -1을 반환
+	 비교할 값이 매개값과 같으면 0을 반환
+
+=================================================
+
+예제1) 이름, 영어 성적을 입력 받아서 최고 점수 출력
+  영어성적을 비교하는 클래스(EnglishScore)
+  	- 성적을 비교
+	- 이름과 점수를 출력할 수 있도록  toString()
+
+  실행클래스 ScoreExam 
+	-  최고점수를 찾는 메서드
+	   main()
+
+
+---
+package scoreExam;
+
+public class EnglishScore implements Comparable<EnglishScore>{
+	//필드
+	String name;
+	int score;
+	
+	//생성자
+	public EnglishScore(String name, int score) {
+		this.name = name;
+		this.score = score;
+	}
+		
+	//메서드
+	@Override
+	public String toString() {
+		return name + ", " + score;
+	}
+
+	@Override
+	public int compareTo(EnglishScore o) {
+		if(this.score > o.score) {
+			return 1;
+		}else if(this.score < o.score) {
+			return -1;
+		}else {
+			return 0;
+		}
+	}
+
+}
+----
+package scoreExam;
+
+public class MathScore implements Comparable<MathScore>{
+	//필드
+	String name;
+	int score;
+	
+	//생성자
+	public MathScore(String name, int score) {
+		this.name = name;
+		this.score = score;
+	}
+		
+	//메서드
+	@Override
+	public String toString() {
+		return name + ", " + score;
+	}
+
+	@Override
+	public int compareTo(MathScore o) {
+		if(this.score > o.score) {
+			return 1;
+		}else if(this.score < o.score) {
+			return -1;
+		}else {
+			return 0;
+		}
+	}
+
+}
+---
+package scoreExam;
+
+public class ScoreExam {
+	public static <T extends Comparable> T findBest(T[] val) {
+		T best = val[0];
+
+		for (int i = 0; i < val.length; i++) {
+			if (best.compareTo(val[i]) < 0) {
+				best = val[i];
+			}
+		}
+		return best;
+	}
+
+	public static void main(String[] args) {
+		EnglishScore[] engScore = { new EnglishScore("홍길동", 70), new EnglishScore("우영우", 95),
+				new EnglishScore("정명석", 50), new EnglishScore("정우성", 70) };
+		MathScore[] matScore = { new MathScore("홍길동", 78), new MathScore("우영우", 85), new MathScore("정명석", 40),
+				new MathScore("정우성", 65) };
+
+		// 메서드를 이용해서 찾기
+		System.out.println("영어 최고 점수 = " + findBest(engScore));
+		System.out.println("수학 최고 점수 = " + findBest(matScore));
+
+	}
+
+}

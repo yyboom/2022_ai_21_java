@@ -1,0 +1,380 @@
+/////////////////////////////////////////DAY4///////////////////////////////////////////////
+▣ 반복문
+	- for : 규칙적 반복, 반복횟수를 알 수 있을 때
+	- while : 불규칙적인 반복, 조건이 중요할 때
+
+	
+1. random() :
+	0.0 <= Math.random() < 1.0  => 0.0. 0.0000,0.000001,...
+	- 난수 발생
+	
+	// 0<=(int)Math.random() < 1   => 0	
+		(int)(Math.random()*구하려는 개수)
+		
+	  0*5<=(int)(Math.random()*5) < 1*5    => 0,1,2,3,4
+	 0*5<=(int)(Math.random()*10) <1*10    => 0,1,2,3,4,5,6,7,8,9
+
+		(int)(Math.random()*구하려는 개수)+1
+
+ 	(0*5) + 1<=(int)(Math.random()*5) <(1*5) + 1  => 1, 2, 3, 4, 5
+2.for
+
+	for( 초기식 ; 조건식 ; 증감식){
+		조건식이 참일 동안 반복해서 실행할 문장들
+	}
+
+3. 이중 for
+	for( 초기식 ; 조건식 ; 증감식){
+		for(초기식; 조건식; 증감식){
+		 	조건식이 참일 동안 반복해서 실행할 문장들
+		}
+	}
+
+
+	for(int i=2; i<=9; i++) {
+		System.out.println( i + "----");
+		
+		for(int j=1; j<=9; j++) {
+			System.out.println("\t\t===" + j);
+		
+		}
+	}
+
+
+
+------------------
+	//구구단
+	for(int i=2; i<=9; i++) {
+		System.out.println(i + "단");
+		System.out.println("-------------");
+		
+		for(int j=1; j<=9; j++) {
+			System.out.println(i + " * " + j + " = " + (i * j));
+			System.out.println("-------------");
+		}
+		System.out.println();
+	}
+	
+4. while
+	while(조건식){
+		조건식이 참일때 반복해서 실행할 문장들
+	}
+
+
+	초기식
+	while(조건식){
+		조건이 참일때 반복해서 실행할 문장들
+		증감식
+	}
+
+		// 3단
+//		int dan = 3;
+//		
+//		for(int i=1; i<=9; i++ ) {  //i=> 지역변수, {}범위 안에서만 사용 가능
+//			System.out.println(dan + " * " + i + " = " + (i*dan));
+//		}
+//		
+// -------------------------------------------------------
+//		int dan1 = 3;
+//		int k = 1;  // 초기식
+//		while(k<=9) {  // 조건식
+//			System.out.println(dan1 + " * " + k + " = " + (k*dan1));
+//			k++;  // 증감식, k = k + 1;
+//		}
+
+		int dan1 = 3;
+		int k = 0;  // 초기식
+		while(k<9) {  // 조건식
+			k++;  // 증감식, k = k + 1;
+			System.out.println(dan1 + " * " + k + " = " + (k*dan1));
+		}
+		
+	}
+
+-----------------
+		//주사위 눈 :예1) 주사위를 3번 던져서 나온 눈 구하기
+		int nun = 0;
+		
+		for(int i=1; i<=3 ; i++) {
+			nun =(int)(Math.random()*6) + 1;     //1,2,3,4,5,6
+//			nun =(int)(Math.random()*6);         //0,2,3,4,5
+			System.out.println(nun);
+		}
+		
+//		
+		//예2) 주사위의 눈이 5가 나올 때까지 반복해서 주사위 눈 구하기
+		//while문, 주사위 : dics
+		// 조건: 눈이 5가 나오면 반복문을 끝내기
+		int dics=0;
+		
+		while(true) {
+			dics = (int)(Math.random()*6) + 1;
+
+			if(dics==5) {//주사위 눈이 5가 나오면 
+				break;  //while문을 종료
+			}
+			
+			System.out.println(dics);
+		}
+
+----------------------------
+		// 예제3 로또 번호 출력
+		// 오늘의 로또 번호 :    .....
+		// 숫자 6개  => 랜덤을 6번 처리
+		int lottoNumber = 0;
+		
+		System.out.print("오늘의 로또 번호 : ");
+		for(int i=1; i<=6; i++) {
+			lottoNumber =(int)(Math.random() * 45) + 1; // 1 ~ 45
+//			System.out.println(lottoNumber);
+			System.out.print(lottoNumber + " ");
+		}
+		System.out.println();
+--------------------------------------
+		
+5. break;
+	- if문을 제외한 자기와 가장 가까운 {}를 빠져 나온다.
+	- 반복문을 실행 중시시키기 위해 사용
+
+
+6. continue
+	- for문이 continue을 만나면 증감식으로 올라감,
+		continue 뒤쪽의 문장들은 실행하지 않고 증감식으로 바로 올라감
+
+	- while, do ~ while 문이 continue을 만나면, 조건식으로 이동
+
+
+7.   컴퓨터에서는 false를 쓰는 자리에 false 대신에 0을 써도 false로 인식
+	true를 쓰는 자리에  true 대신 1을 써도  true 로 인식
+
+
+
+
+8. do ~ while
+	- while( 조건식 ) {
+	    반복해서 실행할 문장들
+	  }  // 조건이 false이면 한 번도 실행하지 않을 수 있음
+	
+
+	
+	- do{   
+		반복해서 실행할 문장들
+
+	 }while(조건식) ;
+	  // 조건과 상관 없이 한 번이상은 실행
+
+
+		// 컴퓨터가 랜덤으로 값을 산출하면, 우리가 그 값을 맞추기
+		// 우리가 입력한 값이 컴퓨터가 산출한 값보다 크면 '더 작은 값을 입력하세요'라는 메시지를 출력
+		// 우리가 입력한 값이 컴퓨터가 산출한 값보다 작으면 '더 큰값을 입력하세요.'라는 메시지를 출력
+		// 우리가 입력한 값이 컴퓨터가 산출한 값과 같으면 '정답 입니다'라는 메시지를 출력
+
+		// 컴퓨터가 입력한 범위 : 1 ~ 100사이 값
+		// while, if ~ else if
+		int comAnswer = 0, userInputAnswer = 0;
+		boolean run = true;  // 반복문 진행여부 
+
+		// 사용자 입력 받기 준비
+		Scanner sc = new Scanner(System.in);
+
+		// 컴퓨터가 산출하는 값
+		comAnswer = (int) (Math.random() * 100) + 1;
+
+		// 컴퓨터가 만들어낸 값 확인 => 확인 후 주석
+		System.out.println("컴퓨터 정답 = " + comAnswer);
+
+//		while (run) { // run - true=> 반복, run - false=> while종료
+//			// 사용자가 정답입력 하기
+//			System.out.println("1 ~ 100 사이의 정수값을 입력하세요.>>");
+//			userInputAnswer = sc.nextInt(); // 사용자가 입력한 값을 가져다 담기
+//
+//			if (comAnswer > userInputAnswer) { // 컴 > 사
+//				System.out.println("더 큰 값을 입력하세요...");
+//			} else if (comAnswer < userInputAnswer) { // 컴 < 사
+//				System.out.println("더 작은 값을 입력하세요...");
+//			} else { // 컴==사
+//				System.out.println("정답입니다.");
+//				run = false; // while문을 빠져나가기 위해, break;
+//			}
+//		}
+
+		do {
+			System.out.println("1 ~ 100 사이의 정수값을 입력하세요.>>");
+			userInputAnswer = sc.nextInt(); // 사용자가 입력한 값을 가져다 담기
+
+			if (comAnswer > userInputAnswer) { // 컴 > 사
+				System.out.println("더 큰 값을 입력하세요...");
+			} else if (comAnswer < userInputAnswer) { // 컴 < 사
+				System.out.println("더 작은 값을 입력하세요...");
+			} else { // 컴==사
+				System.out.println("정답입니다.");
+//				run = false; // while문을 빠져나가기 위해, break;
+			}
+//		}while(run);
+		}while(comAnswer != userInputAnswer);
+
+-----------------------------------------------------
+	// 숫자를 입력하세요?  3
+	// 3
+	// 1	4	7
+	// 10	13	16
+	// 19	22	25
+
+		
+	// 숫자를 입력하세요?  2
+	//2
+	//1	 3
+	//5	 7
+
+		int num=1;  // 숫자를 쓰기 위한 값
+		int input=0; // 행과 열을 반복하고, 값을 증가시키기 위해 입력 받는 값
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("숫자를 입력하세요>>");
+		input = sc.nextInt();
+		
+		for(int i=1; i<=input; i++ ) {    // 행(가로 방향 출력 위해) 
+//			System.out.print(i + "=>\t");  // 행수 알아보기 위해 
+			
+			for(int j=1; j<=input; j++ ) {  //열(세로방향 출력 위해)
+				System.out.printf("%d\t", num);
+//				System.out.printf("%4d", num);
+				  num += input;  // num = num + input  ; 입력한 숫자 만큼 값을 증가시키기 위해 			  
+			}
+			
+			System.out.println();   // 줄바꿈
+		}
+---------------------------------------------------------------------
+		// 1 - 커피, 2-홍차, 3 - 라떼
+//		int orderInt = 0;
+		String order = null;
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("주문 번호 선택 \n 1-커피, 2- 홍차, 3-라떼");
+//		orderInt = sc.nextInt();
+
+		order = sc.next(); // 문자열 입력받기, 공백과 Enter 를 구분자로 인식
+//		order = sc.nextLine();  // 문자열로 입력받기, 한 줄을 입력 받을 때, 주소
+
+		// "1" == order : 문자열이므로 참조하는 주소값이 같은가, 참조하는 객체가 같은가?
+		// order.equals("1") : 값이 같은가?
+		// 숫자(정수) 1 == num : 숫자일 경우 값이 같은가?
+
+		if (order.equals("1")) {
+			System.out.println("커피 주문");
+		} else if (order.equals("2")) {
+			System.out.println("홍차 주문");
+		} else if (order.equals("3")) {
+			System.out.println("라떼 주문");
+		} else {
+			System.out.println("잘못 입력, 다시 입력하세요.");
+		}
+
+		// ----------------------
+		switch (order) { // "1" - 문자열(String),  '1' - 문자(char), 1 - 정수(int)
+		case "1":
+			System.out.println("커피 주문");
+			break;
+		case "2":
+			System.out.println("홍차 주문");
+			break;
+		case "3":
+			System.out.println("라떼 주문");
+			break;
+		default:
+			System.out.println("잘못 입력, 다시 입력하세요");
+			break;
+		}
+
+-------------------------------------------
+		final int KEY_VALUE = 5;  // 문자를 -> 암호화,   암호화 -> 복호화 키값
+		String password = "ajfxlzoavjtm";//입력받는 암호
+		String encryPwd = ""; // 암호화를 받을 것
+		String decryPwd = ""; // 복호화를 받을 것
+		
+		// 문자열의 길이(몇 글자인지) :  문자열.length()
+		// 문자열.charAt(인덱스)  : 인덱스 위치의 문자
+		// 비밀번호를 가지고 암호화 - 유니코드
+		// 비밀번호에서 한문자씩을 뽑아서 KEY_VALUE 를 곱해서(*, + , -) 암호키 만들기
+		for(int i=0; i<password.length(); i++) {  // 문자 하나 처리하기 위해 문자열길이 만큼 반복
+			encryPwd +=(char)(password.charAt(i) * KEY_VALUE);
+//			encryPwd = encryPwd + (char)(password.charAt(i) * KEY_VALUE);
+		}
+		System.out.println(encryPwd);
+		
+		// 복호화 : 암호화된문자 / KEY_VALUE  (암호화할 때 곱했기에 나누어 준다)
+		for(int i=0; i<encryPwd.length(); i++) {
+			decryPwd += (char)(encryPwd.charAt(i) / KEY_VALUE);
+		}
+		System.out.println(decryPwd);
+
+
+----------------------------------------------------
+//   사용자로부터 하나의 문자를 입력받아서 숫자인지 영문자인지 확인하기
+		
+		char ch = ' ';// char ch = ''  =>에러. 
+					  // String str = "";  String str = null;
+		String inputString = null;  //String inputString = "";
+		
+		Scanner sc = new Scanner(System.in);
+		inputString = sc.next();
+		
+		ch = inputString.charAt(0);  
+		   // 문자열.charAt(인덱스) => 문자열에서 인덱스 위치의 문자 하나를 뽑음, 문자
+		
+		// 숫자인지 먼저 판별
+		if(ch>='0' && ch<='9') {
+			System.out.println("입력한 글자는 숫자입니다.");
+		}
+
+		// 문자인지 판별
+		if((ch>='a' && ch<='z') || (ch>='A' && ch<='Z')) {
+			System.out.println("입력한 글자는 영문자입니다.");
+		}
+
+==========================================================
+▣  String 참조 자료형
+	- 클래스 (class, 설계도, 틀)
+	- 추상화 : 공통점을 뽑아내는 것(학생 - 학번, 이름, 주민번호, 전화번호, 학과,시험본다, 학교간다...)
+	- 객체(object) : 클래스로 만들어낸 실체
+	- 문자열 저장 클래스 타입
+	- 문자열은 큰따옴표("")안에 표기
+
+1. String 클래스만의 특징
+	- 객체 내의 값을 변경할 수 없다. 
+	  값을 변경한다는 것은 새로운 객체를 생성한다는 의미
+
+	- 리터럴을 바로 입력한 데이터는 문자열이 같을 경우 하나의 객체를 공유
+		String str1 = "홍길동";   //str1 == str2 : true
+		String str2 = "홍길동";
+		String str3 = new String("홍길동"); // 객체 생성, str1 == str3 : false
+
+
+2. String 객체 생성
+	String 참조변수명 = new String("문자열");
+
+3. String  객체의 '+' 연산
+	- 문자열 + 문자열  => 문자열
+	- 문자열 + 기본자료형(byte, short, int,long, float, double, boolean) => 문자열
+		"7" + 2  => 72
+		3 + "5"  => 35
+
+	- 기본자료형 문자열로 변환
+		String.valueOf(값)  => String 형으로 변경
+		"7" + String.valueOf(2)  => 72
+		String.valueOf(값) 생략하면 컴파일러가 컴파일시 자동으로 변경시킴
+
+4. String의 주요 메서드
+	- 문자열 길이 : "문자열".length()
+	- 문자열 검색 : "문자열".charAt(인덱스) - 인덱스 위치 문자
+		      "문자열".indexOf(찾는 문자) : 문자의 인덱스 위치
+	- 기본 자료형을 문자열 : String.valueOf(값)
+	- 문자열 연결 : "문자열1".concat("문자열2")
+
+=================================================================
+▣ 배열(array)
+	- 동일한 자료형을 묶어서 저장하는 참조 자료형
+	- 배열을 선언할 때는 반드시 크기를 지정해야 한다.
+	- 배열은 한 번 크기가 정해지면 절대 변경할 수 없다.
+	   추가 및 삭제를 할 수 없다.
