@@ -1,0 +1,160 @@
+/////////////////////////////////////////DAY10///////////////////////////////////////////////
+▣ 인터페이스(interface)
+	- 추상클래스를 심화시킨 특수한 형태
+1. 인터페이스의 정의
+	- 모든 필드가 public static final로 정의, 생략하면 컴파일러가 자동으로 컴파일 시 추가함
+	- 모든 메서드가 public abstract로 정의, 생략하면 컴파일러가 자동으로 컴파일 시 추가함
+	- 단, default 메서드는 제외
+
+	* 추상클래스로 구현 => 자체적으로 객체 생성이 불가능하다.
+		접근제한자(public) interface 인터페이스명{
+			//필드
+			public static final 필드명 = 값;
+
+			//메서드
+			public abstract 리턴타입 메서드명(매개변수...);//{}body가 없다.
+		
+			//default 메서드->유일하게 추상이 아니다.(java 1.8부터)
+			public default 리턴타입메서드명(매개변수...){}//body가 구현됨
+
+			//static 메서드(java 1.8부터)
+			public static 리턴타입 메서드명(매개변수...){}//body구현함	
+	- 인터페이스는 상속할 때 extends대신 implements를 적음
+	- 인터페이스는 완성이 다 안된 상태이므로 다중구현이 가능!!
+====================================================================
+2. 인터페이스의 상속
+	- implements 사용
+	- 다중 상속(구현)이 가능
+	- class는 단일 상속만 가능
+	
+	interface A {...}
+	interface B {...}
+	interface C {...}
+
+	//가능
+	class InterExam implements A ()
+	class InterExam implements A, B ()
+	class InterExam implements A,B,C () ->다중 구현이 가능
+
+	//불가능
+	class InterExam extends D, E{}
+	class CarClass extends A, B, C{ }
+	인터페이스가 인터페이스를 구현하는 것은 안됨. 
+	(완성이 안되어있는데 구현한다는건 말이 안됨)
+
+	// 가능 순서 중요.인터페이스 인터페이스끼리는 extends해야함!=>이때는 상속이라함
+	// 클래스명 extends 클래스명 implements 인터페이스명, 인터페이스명, ..{  }
+	public class CarClass implements InterfaceCar { }
+	public interface InterCar01 extends InterfaceCar02{ } 
+
+	//불가능
+	public interface InterCar01 implements  InterfaceCar02 {	}  // 인터페이스가 미완성이기 때문
+===============================================================================
+▣ 예외(exception)
+		Object
+		Throwable
+	Error			Exception	
+				    일반예외		RuntimeException : 실행예외
+1. 예외(Exception)와 Error의 차이점
+	- Exception : 연산오류, 포맷오류 등 상황에 따라 개발자가 해결 가능한 오류
+			대처방안을 만들 수 있는 오류
+			ex) x=7/0;
+				=>예외 발생 -> 해결방안 제시 하면 에러가 떨어지지 않음
+	- Error(에러) : jvm자체의 오류로 개발자가 해결할 수 없는 오류
+			에러 발생 -> 종료됨(해결방안 x)
+		OutOfMemoryError, ThreaDeaths
+2. 예외클래스
+	- 일반예외(Checked Exception) : 컴파일 전에 checking이 됨
+					=>빨간 줄로 나타나게 되는 것들
+						문법을 체크한다는 뜻으로 예외처리가 필수
+						예외 처리를 하지 않으면 컴파일 자체가 불가능함
+	
+	- 실행예외(Runtime Exception) : 실행시 체크, 문법을 체크 하지 않음
+		컴파일에는 문제없지만 실행하다 예외가 발생하면 프로그램이 종료
+		예외처리를 하지 않아도 컴파일은 가능, 실행 중 예외가 발생하면 프로그램 종료
+3. 예외처리 : 예외 처리하면 정상 실행 가능
+	try{
+		예외 발생 가능 코드
+	}
+	catch(예외클래스이름 참조변수명){
+		해당 예외가 발생할 경우 처리할 코드들
+	}
+	try{
+		예외 발생 가능 코드
+	}catch( 예외클래스이름   참조변수명){
+		해당예외가 발생할 경우 처리할 코드들
+	}finally{
+		예외 발생여부에 상관없이 무조건 실행하는 코드들
+ 	}
+4. 예외 처리 프로세스
+	- try block에서 예외 발생 -> jvm에게 넘김 -> jvm은 발생한 예외 클래스 객체 생성
+	-> 생성객체를 받을 수 있는 catch 블록으로 전달
+	- 만일 jvm에서 생성된 예외 객체를 받을 수 있는 catch(..){}블록이 없는 경우 예외처리가 되지 않음
+
+5. 다중 예외 처리(multi catch)
+	- try ~ catch 블록에서 catch 블록은 여러 개 사용 가능
+	- 발생한 예외 객체를 받을 수 있는 catch블록 실행
+		
+	- catch 블록은 위에서부터 확인한다. 그래서 언제난 예외는 범위가 좁은 것 부터 써야 함
+	
+	- 하나의 catch 블록에서 여러 개의 예외처리 가능.예외 타입을 or(|)로 연결
+		try{
+			예외 발생 가능 영역
+		}
+		catch(예외 타입 A | 예외 타입B 참조 변수명){
+			예외 처리 영역
+		}
+6. 자동 리소스 닫기(try-with-resource)
+	- java.io에서 많이 사용 
+		try{리소스를 사용하는 코드}{
+			리소스를 사용하지 않는 예외발생 가능 코드
+		}
+		catch(예외 타입 A | 예외 타입B 참조 변수명){
+			예외 처리 영역
+		}
+		finally{
+			예외 발생여부에 관계없이 무조건 실행할 코드
+		}
+		try(InputStreamReader is = new InputStreamReader(System.in);){//파일을 읽어서 예외처리를 하고 자동으로 닫아줌
+			System.out.println(is.read());//is.read()일 경우 반드시 파일 처리가 끝난 후 is.close()를 처리해줘야 함
+			//그러나 try with resource를 사용하면 자동으로 is.close()처리
+		}
+		catch (IOException e) {
+			System.out.println("예외발생");
+		}
+	
+	- 예외 발생 여부와 관계없이 try-catch 완료 후 자동을 close()를 실행
+		* 자동 해제 리소스 객체는 Autoclose 인터페이스를 구현하여야 함
+		* AutoClseable 인터페이스는 cloase(); 메서드를 가지고 있으므로...
+*7. 예외 떠넘기기(throws)
+	- 예외 떠넘기기(예외를 전가시키기) : 예외처리를 자신이 호출된 지점으로 떠넘기기
+	- 이 경우 예외처리는 떠넘기기(전가)받은 상위 위치에서 처리
+	
+	메서드 이름(...) throws 예외클래스
+	리턴타입 메서드명(입력매개변수...)throws 예외 클래스명 { 예외발생코드}
+	리턴타입 메서드명(입력매개변수...)throws 예외 클래스명, 예외클래스명.. { 예외발생코드}
+	리턴타입 메서드명(입력매개변수...)throws Exception { 예외발생코드}
+
+	- 주의!: throws 키워드가 붙어있는 메서드는 반드시 try 블록 내에서 호출 되어야 함. 그리고 catch 블록에서 떠넘겨
+		받은 예외를 처리해야 함.
+8. 사용자 정의 예외 클래스 선언
+	- 자바 표준 API에서 제공하지 않는 예외
+	- 애플리케이션 서비스와 관련된 예외들을 만들고 싶을 때 - 잔고부족예외, 계좌이체 실패 예외, 회원가입 실패 예외...
+	- 사용자 정의 예외 클래스는 Exception, RuntimeException 상속
+	- 생성자 2개 지정
+	- Exception 상속:일반예외로 생성. 컴파일전에 체크, 예외처리를 하지 않으면 컴파일 자체가 불가능
+
+		class XXXException extends RuntimeException{
+			XXXException(){}
+			XXXException(String str){//예외 메세지 넘겨 받기
+				super(str);
+			}
+		}
+	- RuntimeException 상속 : 실행예외, 실행시 체크. 예외처리를 하지 않아도 컴파일은 가능
+			실행중 예외가 발생하면 프로그램이 종료 
+			얘외처리를 하는 이유가 프로그램 종료를 막기 위해서 하는 것
+			- 생성자 2개 지정
+	- 사용자 정의 예외 클래스 만들기
+		-> 사용자 정의 예외 클래스 객체 생성
+		-> 예외 발생시키기
+		-> 예외를 발생시킨 메서드는 해당예외를 처리하거나 상위 메서드를 전달하여야 함
