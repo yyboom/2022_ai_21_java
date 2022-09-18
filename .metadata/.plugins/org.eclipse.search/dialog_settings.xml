@@ -10,6 +10,8 @@
 			<item value="org.eclipse.egit.ui.commitSearchPage"/>
 			<item value="org.eclipse.jdt.ui.JavaSearchPage"/>
 			<item value="org.eclipse.pde.internal.ui.search.SearchPage"/>
+			<item value="org.springframework.ide.eclipse.beans.ui.search.searchPage"/>
+			<item value="org.springframework.ide.eclipse.aop.ui.matcher.matcherPage"/>
 		</list>
 		<list key="Search.enabledPageIds">
 			<item value="org.eclipse.search.internal.ui.text.TextSearchPage"/>
@@ -17,16 +19,18 @@
 			<item value="org.eclipse.egit.ui.commitSearchPage"/>
 			<item value="org.eclipse.jdt.ui.JavaSearchPage"/>
 			<item value="org.eclipse.pde.internal.ui.search.SearchPage"/>
+			<item value="org.springframework.ide.eclipse.beans.ui.search.searchPage"/>
+			<item value="org.springframework.ide.eclipse.aop.ui.matcher.matcherPage"/>
 		</list>
 	</section>
 	<section name="SearchDialog.ScopePart">
 		<item key="scope" value="0"/>
 	</section>
 	<section name="DialogBounds_SearchDialog">
-		<item key="DIALOG_X_ORIGIN" value="150"/>
-		<item key="DIALOG_Y_ORIGIN" value="203"/>
-		<item key="DIALOG_WIDTH" value="562"/>
-		<item key="DIALOG_HEIGHT" value="507"/>
-		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|10.5|0|WINDOWS|1|-14|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+		<item key="DIALOG_X_ORIGIN" value="542"/>
+		<item key="DIALOG_Y_ORIGIN" value="288"/>
+		<item key="DIALOG_WIDTH" value="804"/>
+		<item key="DIALOG_HEIGHT" value="445"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 </section>

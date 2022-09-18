@@ -158,3 +158,27 @@
 		-> 사용자 정의 예외 클래스 객체 생성
 		-> 예외 발생시키기
 		-> 예외를 발생시킨 메서드는 해당예외를 처리하거나 상위 메서드를 전달하여야 함
+
+9. 예외 객체 생성
+	- throw : 예외 객체 생성 
+
+	- throw new  XXXRuntimeException();
+	   throw new XXXRuntimeExceptin(String message);
+
+	  throw new XXXException( ) ;
+	  throw new XXXExceptin(String message) ;
+
+
+
+            public void method() throws XXXException{  // 메서드 호출한 곳으로 예외 던지기
+		throw new XXXExceptin(String message) ; //예외 발생시키기
+	}
+
+               
+        	 try{
+	 	method(); //여기에서 예외처리하기
+       	}catch(XXXExceptin e){
+		예외 처리코드
+	}
+
+--------------------

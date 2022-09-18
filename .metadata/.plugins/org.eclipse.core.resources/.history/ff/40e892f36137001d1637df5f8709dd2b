@@ -1,0 +1,370 @@
+/////////////////////////////////////////DAY11///////////////////////////////////////////////
+▣ 예외(Exception)
+		Objcet
+		Throwable
+	Error			Exception
+				 일반예외		RuntimeException   :  실행예외
+
+1. 예외(Exception)와 Error의 차이점
+	- Exception(예외) : 연산오류, 포맷오류 등 상황에 따라 개발자가 해결 가능한 오류
+		  대처방안을 만들 수 있는 오류
+		ex) x = 7 / 0;
+		   	=> 예외 발생 -> 해결방안을 제시
+
+
+	- Error(에러) : jvm 자체의 오류로 개발자가 해결할 수 없는 오류
+		  에러 발생 -> 종료(해결방안 안됨)
+		 OutOfMemoryError, ThredDeaths
+
+2. 예외(Exception) 클래스
+	- 일반예외(Checked Exception) : 컴파일 전에 체크
+			문법을 체크한다는 뜻으로 예외 처리가 필수
+			예외 처리를 하지 않으면 컴파일 자체가 불가능
+
+	-  실행예외(RuntimException) : 실행시 체크, 문법을 체크 하지 않음
+		 	컴파일에는 문제없지만 실행하다 예외가 발생하면 프로그램이 종료
+			예외처리를 하지 않아도 컴파일 가능, 실행 중 예외가 발생하면 프로그램 종료
+
+
+3. 예외처리 : 예외 처리하면 정상 실행 가능
+	
+	try{
+		예외 발생 가능 코드
+	}catch( 예외클래스이름   참조변수명){
+		해당예외가 발생할 경우 처리할 코드들
+	}catch( 예외클래스이름   참조변수명){
+		해당예외가 발생할 경우 처리할 코드들
+	}catch( 예외클래스이름   참조변수명){
+		해당예외가 발생할 경우 처리할 코드들
+	}
+
+
+
+	try{
+		예외 발생 가능 코드
+	}catch( 예외클래스이름   참조변수명){
+		해당예외가 발생할 경우 처리할 코드들
+	}finally{
+		예외 발생여부에 상관없이 무조건 실행하는 코드들
+ 	}
+
+4. 예외 처리 프로세스
+	-  try block에서 예외 발생 -> jvm에 넘김  -> jvm은 발생한 예외 클래스 객체 생성
+	 	 -> 생성객체를 받을 수 있는 catch 블록으로 전달
+	- 만일 jvm에서 생성된 예외 객체를 받을 수 있는 catch(...){ } 블록이 없는 경우 예외처리가 되지 않음
+
+
+5. 다중 예외 처리(multi catch)
+	- try ~ catch 블록에서  catch 블록은 여러 개 사용 가능
+	- 발생한 예외 객체를 받을 수 있는 catch 블록 실행
+		try {
+			System.out.println(7/3); //ArithmeticException
+			int num = Integer.parseInt("10A"); //NumberFormatException
+			
+		}catch(ArithmeticException e) {
+			System.out.println("0으로 나눌 수 없습니다.");
+			System.out.println(e.getMessage());  // 에러 메시지 출력. 모든 예외는 Throwable를 상속받음. Throwable클래스의 메서드
+												// 예외가 발생했을 때 생성자로 넘긴 메시지를 문자열 형태로 리턴
+		}catch(NumberFormatException e) {
+			System.out.println("정수로 변환할 수 없는 문자열입니다.");
+			e.printStackTrace(); // 예외 발생이 전달되는 경로 출력, 개발이 끝나면 반드시 주석처리 또는 제거
+								// Throwable클래스의 메서드
+		}catch(Exception e) {
+		  System.out.println("예외 발생");	
+		  System.out.println("실행할 수 없음");	
+		}
+	        }
+
+	- catch 블록은 위에서부터 확인한다. 그래서 언제나 예외는 범위가 좁은 것 부터 써야 함
+		try {
+			System.out.println(7/3); //ArithmeticException
+			int num = Integer.parseInt("10A"); //NumberFormatException
+		
+		}catch(Exception e) {   // Exception은 예외의 부모 클래스이므로 모든 예외 객체를 받을 수 있음
+				// 따라서 이 아래의 catch블록은 절대 실행이 안됨, 에러 발생
+			  System.out.println("예외 발생");	
+	  
+		}catch(ArithmeticException e) {
+			System.out.println("0으로 나눌 수 없습니다.");
+			System.out.println(e.getMessage());  // 에러 메시지 출력. 모든 예외는 Throwable를 상속받음. Throwable클래스의 메서드
+												// 예외가 발생했을 때 생성자로 넘긴 메시지를 문자열 형태로 리턴
+		}catch(NumberFormatException e) {
+			System.out.println("정수로 변환할 수 없는 문자열입니다.");
+			e.printStackTrace(); // 예외 발생이 전달되는 경로 출력, 개발이 끝나면 반드시 주석처리 또는 제거
+								// Throwable클래스의 메서드
+		}
+
+
+	- 하나의  catch 블록에서 여러 개의 예외처리 가능,  예외 타입을 or(|)로  연결
+		try{
+			예외 발생 가능영역
+		}catch(예외 타입 A | 예외 타입B  참조변수명){
+			예외 처리 영역
+		}
+
+
+		try {
+			System.out.println(7/3); 
+//			System.out.println(7/0); //ArithmeticException
+			int num = Integer.parseInt("10"); 
+//			int num = Integer.parseInt("10A"); //NumberFormatException
+
+			int[] arr = null;
+			System.out.println(arr[0]); //NullPointerException
+		
+		}catch(ArithmeticException | NumberFormatException e) {
+			System.out.println("예외 발생 프로그램을 종료합니다.");
+			System.out.println(e.getMessage());
+
+		}catch(Exception e) {
+			  System.out.println("예외 발생");	
+			  
+		}
+---------------------------
+6. 자동 리소스 닫기(try-with-resource)
+	- java.io에서 많이 사용
+
+		try(리소스를 사용하는 코드){
+			리소스를  사용하지 않는 예외발생 가능 코드
+		}catch(예외 클래스 이름  참조변수명){
+			예외 처리 영역
+		}finally{
+			예외 발생여부에 관계없이 무조건 실행할 코드
+		}	
+
+
+		try(InputStreamReader is = new InputStreamReader(System.in);){
+			System.out.println(is.read());  //is.read()일경우 반드시 파일 처리가 끝난 후 is.close()를
+											// 처리 해줘야 함. 그러나 try with resource를 사용하면 자동으로
+											// is.close()처리
+		}catch (IOException e) {
+			System.out.println("예외발생" );
+		}
+
+	- 예외 발생 여부와 관계없이 try~catch 완료 후 자동을 close()를 실행
+		* 자동 해제 리소스 객체는 AutoCloseable 인터페이스를 구현하여야 함
+		* AutoClseable 인터페이스튼 close(); 메서드를 가지고 있으므로...
+
+
+7. 예외 떠넘기기(throws) 
+	- 예외 떠넘기기(예외를 전가시키기) : 예외처러를 자신이 호출된  지점으로 떠넘기기
+	- 이 경우 예외처리는 떠넘기기(전가)받은 상위 위치에서 처리
+
+	   메서드이름(...)  throws 예외클래스
+	   리턴타입 메서드명(입력매개변수,....) throws 예외 클래스명 { 예외발생코드}
+  	   리턴타입 메서드명(입력매개변수,....) throws 예외 클래스명, 예외클래스명,... { 예외발생코드}
+  	   리턴타입 메서드명(입력매개변수,....) throws Exception { 예외발생코드}
+
+	- throws 키워드가 붙어있는 메서드는 반드시 try 블록 내에서 호출 되어야 함. 그리고 catch 블록에서 떠넘겨
+		받은 예외를 처리해야 함
+
+//		testExcet();	//방법1
+	
+//		방법2
+		try {
+			testExcet();  // 떠넘김을 받았으므로 반드시 try ~ catch처리해준다.
+		} catch (ArithmeticException e) {
+			System.out.println("0으로 나눌 수 없습니다.");
+		}
+		
+		System.out.println("떠넘기기 예외 처리 연습 끝");
+    }
+	
+//	방법1
+//	public static void testExcet() {
+//		try {
+//			System.out.println("예외 떠넘기기 연습");
+//			System.out.println(7/0);
+//		}catch(ArithmeticException e) {
+//			System.out.println("0으로 나눌 수 없음");
+//		}
+//	}
+	
+// 방법2
+	public static void testExcet() throws ArithmeticException {
+		System.out.println("예외 떠넘기기 연습");
+		System.out.println(7/0);
+	}
+
+------
+8. 사용자 정의 예외 클래스 선언
+	- 자바 표준 API 에서 제공하지 않는 예외
+	- 애플리션 서비스와 관련된 예외 - 잔고부족예외, 계좌이체 실패 예외, 회원가입 실패 예외.....
+	
+	- 사용자 정의 예외 클래스는 Exception, RuntimeException 상속
+	- 생성자 2개 지정
+	
+	- Exception 상속 : 일반예외로 생성, 컴파일전에 체크, 예외처리를 하지 않으면 컴파일 자체가 불가능
+		
+		class  XXXException extends Exception{
+			XXXException() {  }  // 생성자
+			XXXExceptin(String message) {  //예외 메시지 넘겨 받기
+				super(message);
+			}  // 생성자
+		}
+
+	- RuntimeException 상속 : 실행예외,  실행시 체크. 예외처리를 하지 않아도 컴파일은 가능
+			실행중 예외가 발생하면 프로그램 종료
+			- 생성자 2개 지정
+
+		class  XXXRuntimeException extends RuntimeException{
+			XXXRuntimeException() {  }
+			XXXRuntimeExceptin(String message) {  //예외 메시지 넘겨 받기
+				super(message);
+			}
+		}	
+
+
+	*     1)사용자 정의 예외 클래스 만들기
+	       2) 사용자 정의 예외 클래스 객체 생성
+	       3)  예외 발생시키기
+	       4)  예외를 발생시킨 메서드는 해당예외를 처리하거나 상위 메서드로 전달하여야 함
+
+
+9. 예외 객체 생성
+	- throw : 예외 객체 생성 
+
+	- throw new  XXXRuntimeException();
+	   throw new XXXRuntimeExceptin(String message);
+
+	  throw new XXXException( ) ;
+	  throw new XXXExceptin(String message) ;
+
+
+
+            public void method() throws XXXException{  // 메서드 호출한 곳으로 예외 던지기
+		throw new XXXExceptin(String message) ; //예외 발생시키기
+	}
+
+               
+        	 try{
+	 	method(); //여기에서 예외처리하기
+       	}catch(XXXExceptin e){
+		예외 처리코드
+	}
+
+--------------------
+package tryCatchExam;
+/*
+ * 예금 잔고 부족시 예외 처리
+ * 은행계좌(Account) 클래스를 통해 출금(withdraw)메서드에서 잔고(balance)필드와
+ * 출금액을 비교해서 잔고 부족하면 BalanceInsufficientException 를 발생시키기
+ */
+
+// 1.사용자 정의 예외 클래스 만들기
+public class BalanceInsufficientException extends Exception {
+	public BalanceInsufficientException() {}
+	public BalanceInsufficientException(String message) {
+		super(message);
+	}
+}
+------
+package tryCatchExam;
+
+//2. 사용자 정의 예외 발생시키기
+public class Account {  // 예금 계좌
+	private long balance;
+	
+	public Account() {}	
+	
+
+	public long getBalance() {
+		return balance;
+	}
+
+	public void setBalance(long balance) {
+		this.balance = balance;
+	}
+	
+	
+	// 예금하기(입금액)
+	public void deposit(int money) {
+		balance += money;
+	}
+
+	// 출금(출금액), 잔액이 부족하면 예외 떠넘기기
+	//출금액을 비교해서 잔고 부족하면 BalanceInsufficientException 를 발생시키기
+	public void withdraw(int money) throws BalanceInsufficientException {//예외 발생되면 자신을 호출한 곳으로 예외 떠넘기기
+		
+		if(balance < money) { // 사용자 정의 예외 발생
+			// jvm에 예외를 발생시키도록 하고,  throw : 사용자 정의 예외 클래스 객체 생성
+			throw new BalanceInsufficientException("잔고 부족 : " + (money - balance) + " 모자람");
+		}
+		
+		balance -= money;
+		
+	}
+}
+---------------
+package tryCatchExam;
+// 실행클래스
+public class AccountExample {
+
+	public static void main(String[] args) {
+		Account account = new Account();
+		
+		//예금하기- 20000
+		account.deposit(20000);
+		//10000원 입금후 현재까지 예금액이 얼마인지 확인
+		System.out.println("예금액 : " + account.getBalance());
+
+		// 출금하기 - 5000원 출금
+//		account.withdraw(5000);  // throws로 던짐을 받았으니까. try ~ catch처리
+		try {
+//			account.withdraw(5000);
+//			//5000원 출금 후 잔액 확인
+//			System.out.println("출금 후 예금액 : " + account.getBalance());
+			
+			account.withdraw(23000);  //현재 입금액이 20000원 있는데
+									 // 출금을 23000원하라고 하면 예외발생
+									// 예금되어있는금액(balace) < 출금액(money) 이니까
+		} catch (BalanceInsufficientException e) {
+			System.out.println(e.getMessage());
+			//Account 클래스의 throw new BalanceInsufficientException("잔고 부족 : " + (money - balance) + " 모자람");
+			// 메시지를 받음
+		} 
+		
+	}
+
+}
+-------
+====================================================
+예외처리 예제-> 책이 제일 좋음
+
+예제)점수를 저장하는 score 변수에는 정수 0~100까지만 대입할 수 있으며, 이외의 값(음수 또는 100보다 큰 값)을
+	대입했을 때 일반 예외를 발생시키려고 한다.
+	이 때 두 예외 상황을 구분할 수 있도록 score값이 음수일 때를 고려한 MinusException 클래스,
+	100을 초과할 때를 고려한 OverException클래스를 각각 작성하여 실행시켜보는 프로그램
+	
+	1) 예외 클래스 만들기(생성자 2개)
+	2) 에외 객체 생성한 후 jvm에게 예외 던지기(throw new...)
+	3) 예외 던지기(메서드명 throws 예외이름{})
+========================================================
+▣ 자바 API(Application Programming Interface)
+	- 자바에서 기본적으로 제공하는 라이브러리(library)
+	- 프로그램 개발에 자주 사용되는 자바에서 제공하는 클래스 및 인터페이스 모음
+	- API 문서 : 쉽게 api를 찾아 볼 수 있도록 문서화 한 것
+		html 페이지로 작성되어 있어 웹브라우저로 바로 볼 수 있음
+		https://docs.oracle.com/en/java/javause/11/docs/api
+==============================================================
+▣ StringBuffer / String Builder 클래스
+	- 자바에서 변경될 수 있는 문자열을 다루기 위해서 사용
+	- 다중 쓰레드 환경에서는 StringBuffer
+	  단일 쓰레드 환경(일반적): String Builder
+=================================================
+▣ 포장(wrapper)
+	- 기본 타입을 사용하면 객체 지향 언어의 특징을 이해할 수 없다.
+	  대부분의 기본 패키지가 제공하는 클래스의 메서드는 참조 타입을 매개변수로 사용하기 때문
+	- 자바는 기초 타입을 포장해 클래스화한 포장 클래스를 제공해서 기초 타입 데이터도 기본 패키지에
+		포함한 모든 클래스에 활용할 수 있도록 한다.
+	- 기본 타입의 값을 내부에 두고 포장
+	- 포장하고 있는 기본 타입 값은 외부에서 변경할 수 없다.
+	- 기본 타입 : byte, short, int, long, float,double, char
+		포장클래스는 첫글자만 대문자로 변경(단, int->Integer, char->Character), Byte, Short, Long, Float, Double
+	- Boxing : 기본 타입의 값을 포장 객체로 만드는 과정
+	  UnBoxing : 포장 객체에서 기본 타입의 값을 얻어내는 과정
+==================================================================
+예제) 다음 주어진 단어를 분리해서 배열에 저장하고 단어의 개수를 출력하시오
+	문장 예시 : Hello java!! java is fun!!
+	단어 개수 : 5개
+	정렬된 토큰 : Hello, java!!, java, is, fun!!
