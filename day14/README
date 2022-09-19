@@ -1,0 +1,599 @@
+/////////////////////////////////////////DAY14///////////////////////////////////////////////
+▣ 람다식(Lambda Expression)
+	- 자바에서 함수적 프로그래밍을 지원하는 기법
+	- 코드의 간결화 및 병렬처리에 강함
+	- 자바에서의 람다식은 함수적 인터페이스만 가능
+
+1. 함수적 프로그래밍 
+	- 기능만 전달하면 내부적으로 처리하겠다. (일반적 프로그램)
+	- 자바는 약간 다름, 이것을 자바에세 처리하게 하는 것이 람다식임
+
+2. 함수적 인터페이스(Functional Interface)
+	- 내부에 단 1개의 추상메서드만 존재하는 인터페이스
+
+		interface Test{
+			public abstract void show();
+		} 
+		
+		@FunctionalInterface
+		interface Test{
+			public abstract void show();
+		} 
+
+		@FunctionalInterface // 아래의 인터페이스는 추상메서드 하나만 가진 인터페이스이다.
+		// 추상 메서드가 하나도 없어도 에러
+		// 추상 메서드가 하나이상이어도 에러
+		public interface FunctionalInterfaceExam {
+			public abstract void show();
+		//	public abstract void method01();
+		}
+
+	- 람다식의 타겟 타입이 될 수 있도록 함수적 인터페이스를 구현
+	- @FunctionalInterface 어노테이션을 붙여주면 컴파일러가 체킹해 줌
+		추상 메서드가 없는지
+		추상 메서드가 하나 이상인지 체크
+		하나이상이거나 없으면 오류 발생
+
+3. 람다식의 정의
+	1) 인터페이스의 구현 메서드 -> 람다식으로 변환
+
+package lambdaExam;
+
+@FunctionalInterface // 아래의 인터페이스는 추상메서드 하나만 가진 인터페이스이다.
+// 추상 메서드가 하나도 없어도 에러
+// 추상 메서드가 하나이상이어도 에러
+public interface FunctionalInterfaceExam {
+	public abstract void show();
+//	public abstract void method01();
+}
+-----
+package lambdaExam;
+
+public class FunctionInterExam implements FunctionalInterfaceExam {
+
+	@Override
+	public void show() {
+	   System.out.println("자식으로 구현");
+	}
+
+}
+--------------------
+//		FunctionalInterface fInter = new FunctionalInterface();
+		// 객체 생성 안됨 => 미완성 메서드(추상 메서드)를 포함하고 있어서
+		// 객체 생성하려면 => 추성 메서드를 완성시켜 주면 객체 생성
+		// 자식에서 구현 => 객체 생성
+		FunctionInterExam fi01 = new FunctionInterExam();
+		fi01.show();
+
+		// 직접 익명 구현 객체 생성 => 추상 메서드 완성하겠다
+		FunctionalInterfaceExam fInter = new FunctionalInterfaceExam() {
+			public void show() {
+				System.out.println("익명구현 객체를 보고 있음");
+			}
+		};
+
+		fInter.show();
+		FunctionalInterfaceExam fLambda = () -> {
+				System.out.println("람다식으로 객체를 보고 있음");
+			};
+		
+		fLambda.show();
+//=======================
+
+4. 람다식의 적용방법 3가지
+	- 익명이너클래스 내 구현 메서드의 약식 표현(람다식) => 내부에 한 개의 메서드만 포함한 인터페이스인 
+		함수적 인터페이스만 가능
+	- 메서드 참조(인스턴스 메서드, 스택틱 메서드 참조)
+	- 생성자 참조( 배열 생성자 참조, 클래스 생성자 참조)
+
+	1) 익명이너클래스 내 구현 메서드의 약식 표현(람다식)=> 함수적 인터페이스만 가능
+
+		package lambdaExam;
+		@FunctionalInterface
+		public interface TestA {
+			void method01();
+		}
+		----
+	public static void main(String[] args) {
+//		TestA ta = new TestA();
+		// 익명이너 클래스
+		TestA ta = new TestA() {
+
+			@Override
+			public void method01() {
+				System.out.println("즐거운 금요일-익명구현");
+				System.out.println("TestA 인터페이스의 method01메서드 재정의");
+			}
+		};
+		ta.method01();
+		System.out.println();
+		
+		//람다식 
+		TestA taLam = ()->{
+				System.out.println("즐거운 금요일-람다식");
+				System.out.println("TestA 인터페이스의 람다식으로 구현한 method01메서드 재정의");
+		};
+		
+		taLam.method01();
+		
+	}
+		//=====
+		System.out.println();
+		
+		//익명이너클래스 - 익명구현객체
+		TestA02 ta02 = new TestA02() {
+			@Override
+			public int method02(int num) {
+				int sum=0;
+				sum = num +30;
+				return sum;
+			}
+		};
+		
+		int result = ta02.method02(5);
+		System.out.println("TestA02의 method02(5)호출 - 익명 " + result);
+		System.out.println();
+		
+		//람다식
+		TestA02 taLam02 = (int num) -> {
+				int sum=0;
+				sum = num +30;
+				return sum;
+		};
+		
+		int resultLam01 = taLam02.method02(5);
+		System.out.println("TestA02의 method02(5)호출 - 람다 " + resultLam01 );
+		System.out.println();
+		
+		
+//		TestA02 taLam02 = (num) -> {  // 매개변수 타입 생략 가능 - 명확히 알 수 있을 때
+//			int sum=0;
+//			sum = num +30;
+//			return sum;
+//		};
+//		
+//		TestA02 taLam02 = num -> {  // 매개변수가 하나일 경우 () 생략 가능
+//			int sum=0;
+//			sum = num +30;
+//			return sum;
+//		};
+//		
+		
+//	TestA03 taLam03 = () -> {
+//		System.out.println("안녕");
+//	};
+		
+	TestA03 taLam03 = () -> System.out.println("안녕");
+	//문장이 하나일 때 {}생략 가능
+
+//	TestA04 taLam04 = (int a, int b) -> {
+//		return a + b;
+//     };
+	
+//     TestA04 taLam04 = (a, b) -> {
+//    	 return a + b;
+//     };	//매개타입 생략 가능
+
+     TestA04 taLam04 = (a, b) -> a + b;
+   	//매개타입 생략 가능, return 생략 가능, 주의) return 생략시 매개타입은 반드시 생략
+		
+
+
+	2) 메서드 참조
+		- 리턴타입과 매개변수가 동일해야 함
+		- 클래스객체 :: 인스턴스메서드명
+		  클래스객체 :: 정적메서드명
+		
+		interface A{
+			void abc();
+		}
+
+		class B{
+			void bcd(){
+			  	System.out.printl("메서드 참조 연습");
+			}
+
+
+	//익명이너클래스(익명이너인터페이스)
+	 	A a = new A(){
+			public void abc(){
+				B b = new B();
+				b.bcd();
+			}			
+		};
+		a.abc();
+
+	//람다식
+		A a = () ->{
+			B b = new B();
+			b.bcd();
+		};
+		a.abc();
+
+	// 메서드 - 클래스객체 :: 인스턴스메서드명
+	 B b = new B();     
+	 A a = b :: bcd;
+
+     ------------------------------
+	- 정적 메서드 
+	interface A{
+		void abc();
+	}
+
+	class B{
+		static void bcd(){
+		        System.out.printl(" 정적 메서드 참조 연습");
+		}
+	}
+
+	//익명
+	A  a = new A(){
+		public void abc(){
+	   		// B b = new B();  // 정적(static)메서드라 객체 생성 필요하지 않음
+					// 정적메서드나 정적필드는 클래스이름.메서드명(), 클래스이름.필들명
+			  B.bcd();
+		}
+	};		
+	a.abc();
+
+	// 람다
+	 A a = () -> { B.bcd() };
+	a.abc();
+
+	// 메서드 참조 
+		클래스명 :: 스태틱메서드명
+	   
+	  A a = B :: bcd;
+	
+	a.abc();
+
+
+
+======================================================================
+======================================================================
+▣ 컬렉션(collection) 프레임워크(Framework) 
+	- collection :  동일한 타입을 묶어서 관리하는 자료구조
+			 저장 공간의 크기(capacity)를 동적으로 관리
+
+	- Framework : 클래스와 인터페이스를 모아 놓은 모임(라이브러리)
+		  	클래스의 정의에 원칙 또는 구조 가 있음
+
+
+	- 배열 : 동일한 타입만 묶어서 저장 , 생성시 크기를 지정하고, 추후에 변경 불가
+	  collection : 동일한 타입만 묶어서 저장, 추후 변경 가능(삽입, 삭제, 추가 가능)
+
+	- java.util 패키지 안에 자료 구조를 라이브러를 제공
+//======
+      	Collection 인터페이스 :  하나의 자료를 모아서 관리하는 데 필요한 기능 제공
+		List인터페이스 : 순차적인 자료를 관리하는 데 사용하는 클래스들
+			        중복허용하지 않음
+			ArrayList 클래스 : 인덱스로 데이터 관리
+			Vector 클래스 : 용량 관리, 보안성 강화, 처리량 감소
+			LikednList 클래스 : 검색이 많을 때
+			...
+		Set인터페이스 :  순서는 중요하지 않고, 중복을 허용하지 않는 클래스들
+			HashSet
+			TreeSet
+			....
+
+	Map 인터페이스  : 쌍(pair)으로 된 자료들을 관리하는 데 유용한 기능을 제공
+		HashMap
+		HashTable
+		TreeMap
+		....
+
+1. 배열과 ArrayList
+	배열 : 길이에 제한을 두어야 할 때 자주 사용
+	ArrayList : 들어올 데이터 양을 알 수 없을 때, 데이터의 길이를 모를때
+
+2. List 컬렉션 객체 생성
+	List<제네릭타입> 참조변수명 = new ArrayList<제네릭타입>();
+	List<제네릭타입> 참조변수명 = new Vector<제네릭타입>();
+	List<제네릭타입> 참조변수명 = new LinkedList<제네릭타입>();
+	또는
+	ArrayList<제네릭타입> 참조변수명 = new ArrayList<제네릭타입>();
+	Vector<제네릭타입> 참조변수명 = new Vector<제네릭타입>();
+	LinkedList<제네릭타입> 참조변수명 = new LinkedList<제네릭타입>();
+
+// 비교 예제
+		String[] str = new String[] {"가","나","다","라","마","바","사"};
+		str[1] = "바나나"; // 변경
+		str[3] = null; // 값만 없애, 공간은 제거 안됨
+		System.out.println(str.length); // 길이
+		System.out.println(Arrays.toString(str));
+		System.out.println();
+		
+//		List<String> listArr = new ArrayList<String>();
+		ArrayList<String> listArr = new ArrayList<String>();  //기본 10개 공간 확보
+		listArr.add("사과");  // 리스트의 맨 마지막에 추가
+		listArr.add("딸기");
+		listArr.add("바나나");
+		listArr.add("포도");
+		
+		listArr.remove(0);  // 인덱스위치 요소를 제거
+		listArr.remove("포도"); // 해당 요소를 제거
+		listArr.add("천혜향");
+		listArr.add(0, "파인애플"); // 인덱스 위치에 요소값 넣기
+		System.out.println(listArr);
+		System.out.println(listArr.size()); // ArrayList 길이
+		
+		listArr.clear(); // 모든 객체를 제거
+		System.out.println(listArr.isEmpty());
+		System.out.println(listArr);
+		
+		listArr.add("홍길동");
+		listArr.add("김자바");
+		listArr.add("박자바");
+		listArr.add("이기자");
+		
+		System.out.println(listArr.get(0)); // 인덱스 위치의 데이터 정보 추출
+		System.out.println(listArr.get(1));
+		System.out.println(listArr.get(2));
+		
+		System.out.println(listArr.isEmpty());
+
+
+==================
+ < 회원 관리 > 
+member 패키지 
+ 	Member 클래스(정의, 공통)  :  회원ID, 회원명, 회원나이
+member.list 패키지
+	MemberInfo : 회원 정보 확인하고, 출력
+
+member.exam 패키지
+	MemberTest : 실행 클래스
+		회원 정보를 입력
+	
+------
+package member;
+
+public class Member {
+	// 회원ID - memberId, 회원이름 - memberName, 회원 나이 - memberAge
+	// 필드
+	private int memberId;
+	private String memberName;
+	private int memberAge;
+
+	// 생성자
+
+	public Member(int memberId, String memberName, int memberAge) {
+		this.memberId = memberId;
+		this.memberName = memberName;
+		this.memberAge = memberAge;
+	}
+
+	// 메ㅡ서드
+	public int getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public int getMemberAge() {
+		return memberAge;
+	}
+
+	public void setMemberAge(int memberAge) {
+		this.memberAge = memberAge;
+	}
+
+	// 정보 출력
+	@Override
+	public String toString() {
+		return memberName + " 회원님의 아이디는 " + memberId + " 나이는 " + memberAge + "살입니다.";
+	}
+
+}
+----------
+package member.list;
+
+import java.util.ArrayList;
+// Member 클래스는 member 패키지에 있으므로 사용하려면 import해야 함
+// MemberInfo클래스와 패키지가 다르기에 import하는 것임
+import member.Member;
+
+public class MemberInfo {
+	private ArrayList<Member> arrayList; // ArrayList 선언
+
+	public MemberInfo() {
+		// Member형으로 선언한 ArrayList생성
+		arrayList = new ArrayList<Member>();
+	}
+
+	// ArrayList에 회원 추가하는 메서드
+	public void addMember(Member member) {
+		arrayList.add(member);
+	}
+	// ArrayList 회원 제거하는 메서드 - memberId에 해당하는 회원을 제거
+	public boolean removeMember(int memberId) {
+		// 1) 회원이 존재
+		for (int i = 0; i < arrayList.size(); i++) {
+			Member member = arrayList.get(i);// 순차적으로 정리된 자료에서 자료 정보를 가져오기
+			int tempId = member.getMemberId();
+			if (tempId == memberId) { // 가져온 정보에 있는 아이디와 매개변수로 넘어온 아이디를 비교해서
+										// 둘이 일치하면
+				arrayList.remove(i); // 해당 객체 제거(아이디에 해당하는 회원 제거)
+				return true;
+			}
+		}
+		// 2) 회원이 존재하지 않는 경우
+		return false;
+	}
+
+	// 제거된 회원을 제외하고 남은 전체 회원 목록을 출력하는 메서드
+	public void showInfo() {
+		// 향상된 for문
+		for (Member mem : arrayList) {
+			System.out.println(mem);
+//			System.out.println(mem.toString());
+		}
+	}
+
+}
+------
+package member.exam;
+
+//클래스들의 패키지 위치가 다르므로 import를 통해서 준비시키기
+import member.list.MemberInfo;
+import member.Member;
+
+public class MemberTest {
+
+	public static void main(String[] args) {
+
+		// 객체생성
+		MemberInfo memberInfo = new MemberInfo();
+
+		// 회원 객체 생성
+		Member hong = new Member(123, "홍길동", 23);
+		Member kim = new Member(124, "김자바", 29);
+		Member choi = new Member(125, "최바다", 30);
+		Member lee = new Member(126, "이기자", 35);
+		Member park = new Member(127, "박하늘", 25);
+		Member im = new Member(128, "임시소", 33);
+
+		// 회원객체를 리스트 목록(MemberInfo)에 추가하기
+		memberInfo.addMember(hong);
+		memberInfo.addMember(kim);
+		memberInfo.addMember(choi);
+		memberInfo.addMember(lee);
+		memberInfo.addMember(park);
+		memberInfo.addMember(im);
+
+		// 전체 회원목록 출력해 보기
+		memberInfo.showInfo();
+
+	// 김자바 회원을 삭제하기 - 김자바 회원의 아이디 넘기기
+		boolean removeResult = memberInfo.removeMember(kim.getMemberId());
+		if(removeResult) {
+			System.out.println(kim.getMemberId() + "회원을 삭제하였습니다.");
+		}else {
+			System.out.println(kim.getMemberId() + "회원이 존재하지 않습니다.");
+		}
+		System.out.println();
+//		// 전체 회원목록 출력해 보기
+//		memberInfo.showInfo();
+
+	}
+
+}
+
+====================================
+package collection;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
+public class ListExam {
+
+	public static void main(String[] args) {
+		List<String> arrayList = new ArrayList<String>();
+		List<String> vectorList = new Vector<String>();
+		List<String> linkedList = new LinkedList<String>();
+		
+		
+		arrayList.add("사과");
+		arrayList.add("포도");
+		arrayList.add("딸기");
+		System.out.println(arrayList.toString());
+		System.out.println();
+		
+		vectorList.add("봄");
+		vectorList.add("여름");
+		vectorList.add("가을");
+		vectorList.add("겨울");
+		System.out.println(vectorList.toString());
+		System.out.println();
+		
+		linkedList.add("자동차");
+		linkedList.add("버스");
+		linkedList.add("기차");
+		System.out.println(linkedList.toString());
+		
+
+	}
+
+}
+===========================
+▣ Iterator 인터페이스
+	- iterator() 메서드 반복하면서 자료가 있는 지 없는지 찾는 것 (순회)
+	
+	Iterator  참조변수 = 객체명.iterator();
+	hashNext()  : 이후에 요소가 더 있는지를 체크하는 메서드
+		    요소가 있으면 true 반환
+	next() :  다음에 있는 요소를 반환
+----------------------
+---	public boolean removeMember(int memberId) {
+		// 1) 회원이 존재
+		for (int i = 0; i < arrayList.size(); i++) {
+			Member member = arrayList.get(i);// 순차적으로 정리된 자료에서 자료 정보를 가져오기
+			int tempId = member.getMemberId();
+			if (tempId == memberId) { // 가져온 정보에 있는 아이디와 매개변수로 넘어온 아이디를 비교해서
+										// 둘이 일치하면
+				arrayList.remove(i); // 해당 객체 제거(아이디에 해당하는 회원 제거)
+				return true;
+			}
+		}
+		// 2) 회원이 존재하지 않는 경우
+		return false;
+	}
+--------------------
+	public boolean removeMember(int memberId) {
+		Iterator<Member> iter = arrayList.iterator();  //iterator()
+		
+		while(iter.hasNext()) { //요소가 있는지 찾기, 있으면 true 반환
+			Member member = iter.next(); // 다음 회원을 가져오기
+			int tempId = member.getMemberId();
+			if(tempId == memberId) {
+				arrayList.remove(member); //회원 삭제
+				return true;
+			}
+		}
+		return false;	
+	}
+	
+===================================
+▣ Set 인터페이스
+	- 집합의 개념
+	- 인덱스 정보를 포함하고 있지 않음
+	- 중복저장 불가능
+		주민등록번호, 사번, 주문번호, 아이디,...
+	-  null 값도 한 개만 포함
+	
+	- HashSet 클래스, TreeSet 클래스
+
+1. HashSet 
+	- 입력 순서와 출력 순서는 동일하지 않을 수 있음
+
+package collection;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class HashSetExam {
+
+	public static void main(String[] args) {
+		Set<String> hashSet = new HashSet<String>();
+		
+		hashSet.add("홍길동");
+		hashSet.add(new String("박자바"));
+		hashSet.add(new String("한바다"));
+		hashSet.add(new String("최하늘"));
+		
+		System.out.println(hashSet);
+	}
+
+}
+===========================
